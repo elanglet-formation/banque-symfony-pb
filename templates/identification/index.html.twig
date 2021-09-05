@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Identification - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+	<div class="container" id="main">
+
+		<div class="alert alert-secondary" role="alert">
+			<h3>Identification Client</h3>
+		</div>
+		
+		{% if message %}
+			<div class="alert alert-danger" role="alert">
+				{{ message }}
+			</div>
+		{% endif %}
+		
+		{{ form(identificationForm) }}		
+
+	</div>
+
+{% endblock %}
