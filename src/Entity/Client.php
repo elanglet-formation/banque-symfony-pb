@@ -62,6 +62,13 @@ class Client
      * @ORM\Column(name="motdepasse", type="string", length=200, nullable=false)
      */
     private $motdepasse;
+    
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+        
+        return $this;
+    }
 
     public function getId(): ?int
     {
