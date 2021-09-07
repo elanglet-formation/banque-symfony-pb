@@ -7,7 +7,9 @@ use App\Entity\Client;
 
 class ClientTest extends TestCase
 {
-    private $client;    
+    // Variable pour chargé un client a chaque test
+    private $client;   
+    
     public function setUp(): void
     {
         // L'objet client sera créé avant chaque test
