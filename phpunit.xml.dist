@@ -19,7 +19,7 @@
 
     <testsuites>
         <testsuite name="Banque">
-            <directory>tests/Unit/Entity</directory>
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
 
