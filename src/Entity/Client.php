@@ -63,7 +63,7 @@ class Client
      */
     private $motdepasse;
     
-    public function setId(string $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
         
