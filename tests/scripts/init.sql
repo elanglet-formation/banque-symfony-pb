@@ -20,6 +20,9 @@ CREATE TABLE IF NOT EXISTS `client` (
 INSERT INTO `client` (`id`, `nom`, `prenom`, `adresse`, `codepostal`, `ville`, `motdepasse`) VALUES
 (1, 'DUPONT', 'Robert', '40, rue de la Paix', '75007', 'Paris', 'secret');
 
+INSERT INTO `client` (`id`, `nom`, `prenom`, `adresse`, `codepostal`, `ville`, `motdepasse`) VALUES
+(2, 'BARRE', 'Denis', '10, rue de la colline', '35000', 'Rennes', 'secret2');
+
 -- --------------------------------------------------------
 
 --
@@ -41,6 +44,8 @@ CREATE TABLE IF NOT EXISTS `compte` (
 INSERT INTO `compte` (`numero`, `solde`, `idclient`) VALUES
 (78954263, '5000.00', 1);
 
+INSERT INTO `compte` (`numero`, `solde`, `idclient`) VALUES
+(11111111, '3000.00', 1);
 --
 -- Contraintes pour les tables déchargées
 --

@@ -3,14 +3,18 @@
 namespace App\Tests\Integration\Backend;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use App\Backend\ClientService;
+use App\Backend\CompteService;
+use App\Entity\Compte;
 use App\Entity\Client;
+use App\Backend\ClientService;
 
-class ClientServiceTest extends KernelTestCase
+class CompteServiceTest extends KernelTestCase
 {
     private static $cnx;
     
+    private $compteService;
     private $clientService;
+    private $client;
     
     public static function setUpBeforeClass(): void
     {
@@ -34,65 +38,63 @@ class ClientServiceTest extends KernelTestCase
         
         // Recuperer le clientService
         $this->clientService = new ClientService($entityManager);
+        
+        // Recuperer le compteService
+        $this->compteService = new CompteService($entityManager);
+        
+        // On créé l'objet compte de reference
+        $this->client = $this->clientService->rechercherClientParId(1);
     }
     
     public function tearDown():void
     {
         // Nettoyage du jeu de données
         self::$cnx->exec(file_get_contents('tests/scripts/clean.sql'));
-    }
+    }   
     
-    public function testRechercherClientParId(): void
-    {
-        // On créé l'objet client de reference
-        $client = new Client();
-        $client->setId(1);
-        $client->setNom('DUPONT');
-        $client->setPrenom('Robert');
-        $client->setAdresse('40, rue de la Paix');
-        $client->setCodepostal('75007');
-        $client->setVille('Paris');
-        $client->setMotdepasse('secret');
+    public function testRechercherCompteParNumero(): void
+    {        
+        $compte = new Compte();
+        $compte->setNumero(78954263);
+        $compte->setSolde('5000.00');
+        $compte->setClient($this->client);
         
         // On appelle la méthode à tester
-        $clientRecupere = $this->clientService->rechercherClientParId(1);
+        $compteRecupere = $this->compteService->RechercherCompteParNumero(78954263);
         
         // On compare l'objet récupere avec l'objet de reference
-        $this->assertEquals($client, $clientRecupere);
+        $this->assertEquals($compte, $compteRecupere);
+        
     }
     
-    public function testRechercherTousLesClients(): void
-    {
-        // On fixe le nombre d'enregistrement
-        $nbEnreg = 2;
-        
+    public function testRechercherCompteClient(): void
+    {        
         // On appelle la méthode à tester
-        $nbEnregRecupere = $this->clientService->rechercherTousLesClients();
+        $comptesRecupere = $this->compteService->rechercherComptesClient($this->client);
         
-        // On compare le nb attendu et le nombre récupéré
-        $this->assertCount($nbEnreg, $nbEnregRecupere);
+        // On compare l'objet récupere avec l'objet de reference
+        foreach ($comptesRecupere as $compte)
+        {
+            $this->assertEquals($this->client, $compte->getClient());
+        }
         
+        $this->assertCount(2, $comptesRecupere);      
     }
     
-    public function testAjouterClient(): void
+    public function testAjouterCompte(): void
     {
         // On créé l'objet client de reference à ajouter
-        $client = new Client();
-        $client->setId(3);
-        $client->setNom('BONNEAU');
-        $client->setPrenom('Jean');
-        $client->setAdresse('5, rue du cochon');
-        $client->setCodepostal('35137');
-        $client->setVille('Bédée');
-        $client->setMotdepasse('secret');
+        $compte = new Compte();
+        $compte->setNumero(22222222);
+        $compte->setSolde('1000.00');
+        $compte->setClient($this->client);
         
         // On appelle la méthode à tester
-        $this->clientService->ajouterClient($client);
-        $clientRecupere = $this->clientService->rechercherClientParId(3);
+        $this->compteService->ajouterCompte($compte);
+        $compteRecupere = $this->compteService->rechercherCompteParNumero(22222222);
         
         // On compare l'objet récupere avec l'objet de reference
-        $this->assertEquals($client, $clientRecupere);
-        
-        
+        $this->assertEquals($compte, $compteRecupere);
+           
     }
 }
